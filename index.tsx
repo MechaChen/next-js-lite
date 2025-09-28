@@ -1,6 +1,11 @@
 import React from 'react';
+import type { ReactNode } from 'react';
 
-export default function Index() {
+type IndexProps = {
+  children: ReactNode;
+};
+
+export default function Index({ children }: IndexProps) {
   return (
     <html>
       <head>
@@ -8,7 +13,7 @@ export default function Index() {
       </head>
       <body>
         <h1>Next.js Lite</h1>
-        <div id="root"></div>
+        <div id="root">{children}</div>
       </body>
     </html>
   );

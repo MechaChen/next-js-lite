@@ -11,7 +11,7 @@
     "typescript": "^5"
   },
   "scripts": {
-    "dev": "bun run server.tsx --watch",
+    "dev": "bun --hot server.tsx",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

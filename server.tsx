@@ -1,14 +1,21 @@
 import { renderToString } from 'react-dom/server';
 
 import Index from './index.tsx';
+import App from './App.tsx';
 
 Bun.serve({
   async fetch(req) {
     const { pathname } = new URL(req.url);
     if (pathname === '/') {
-      return new Response(renderToString(<Index />), {
+      const htmlFromReact = renderToString(
+        <Index>
+          <App />
+        </Index>
+      );
+
+      return new Response(htmlFromReact, {
         headers: {
-          'Content-Type': 'text/html',
+          'Content-Type': 'text/html; charset=utf-8',
         },
       });
     } else {
