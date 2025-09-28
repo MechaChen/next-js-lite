@@ -1,7 +1,7 @@
 import { renderToString } from 'react-dom/server';
 
 import Index from './server/index.tsx';
-import App from './server/App.tsx';
+import App from './client/App.tsx';
 
 Bun.serve({
   async fetch(req) {
