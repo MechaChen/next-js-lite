@@ -12,10 +12,12 @@ export default function Index({ initialProps, children }: IndexProps) {
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.initialProps = ${JSON.stringify(initialProps)}`,
+            __html: `
+            window.initialProps = ${JSON.stringify(initialProps)};
+            `,
           }}
         ></script>
-        <script defer src="./index.js"></script>
+        <script defer src="./hydrater.js"></script>
       </head>
       <body>
         <h1>Next.js Lite</h1>

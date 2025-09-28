@@ -1,11 +1,12 @@
-import App from './App';
 import { hydrateRoot } from 'react-dom/client';
+import App from '../pages/index';
 
 const domNode = document.getElementById('root');
 
 declare global {
   interface Window {
-    initialProps: AppProps;
+    initialProps: any;
+    moduleName: string;
   }
 }
 

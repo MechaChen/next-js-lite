@@ -6,7 +6,8 @@ Bun.serve({
   async fetch(req) {
     const { pathname } = new URL(req.url);
     if (pathname === '/') {
-      const App = require('./client/App.tsx');
+      const moduleName = pathname.replace('/', '') || 'index';
+      const App = require(`./pages/${moduleName}.tsx`);
       const Component = App.default;
       const ComponentProps = await App.getServerSideProps();
 
@@ -22,9 +23,9 @@ Bun.serve({
           'Content-Type': 'text/html; charset=utf-8',
         },
       });
-    } else if (pathname === '/index.js') {
+    } else if (pathname === '/hydrater.js') {
       const bundle = await Bun.build({
-        entrypoints: ['./client/index.tsx'],
+        entrypoints: ['./client/hydrater.tsx'],
       });
 
       return new Response(await bundle.outputs[0]?.text(), {
