@@ -4,9 +4,14 @@ import type { ReactNode } from 'react';
 type IndexProps = {
   initialProps: any;
   children: ReactNode;
+  clientScriptUrl?: string;
 };
 
-export default function Index({ initialProps, children }: IndexProps) {
+export default function Index({
+  initialProps,
+  children,
+  clientScriptUrl,
+}: IndexProps) {
   return (
     <html>
       <head>
@@ -17,7 +22,9 @@ export default function Index({ initialProps, children }: IndexProps) {
             `,
           }}
         ></script>
-        <script defer src="./hydrater.js"></script>
+        {clientScriptUrl && (
+          <script type="module" src={clientScriptUrl}></script>
+        )}
       </head>
       <body>
         <h1>Next.js Lite</h1>
