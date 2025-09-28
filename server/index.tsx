@@ -2,13 +2,19 @@ import React from 'react';
 import type { ReactNode } from 'react';
 
 type IndexProps = {
+  initialProps: any;
   children: ReactNode;
 };
 
-export default function Index({ children }: IndexProps) {
+export default function Index({ initialProps, children }: IndexProps) {
   return (
     <html>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.initialProps = ${JSON.stringify(initialProps)}`,
+          }}
+        ></script>
         <script defer src="./index.js"></script>
       </head>
       <body>

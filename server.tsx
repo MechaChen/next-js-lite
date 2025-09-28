@@ -1,16 +1,20 @@
 import { renderToString } from 'react-dom/server';
 
 import Index from './server/index.tsx';
-import App from './client/App.tsx';
 
 Bun.serve({
   async fetch(req) {
     const { pathname } = new URL(req.url);
     if (pathname === '/') {
+      const App = require('./client/App.tsx');
+      const Component = App.default;
+      const ComponentProps = await App.getServerSideProps();
+
       const htmlFromReact = renderToString(
-        <Index>
-          <App />
-        </Index>
+        <Index
+          initialProps={ComponentProps.props}
+          children={<Component {...ComponentProps.props} />}
+        />
       );
 
       return new Response(htmlFromReact, {
