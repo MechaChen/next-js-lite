@@ -1,15 +1,23 @@
 {
   "name": "next-js-lite",
-  "module": "index.ts",
+  "module": "server.tsx",
   "type": "module",
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "prettier": "^3.6.2"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "scripts": {
-    "dev": "bun run index.ts"
+    "dev": "bun run server.tsx --watch",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@types/react": "^19.1.14",
+    "@types/react-dom": "^19.1.9",
+    "react-dom": "^19.1.1"
   }
 }
