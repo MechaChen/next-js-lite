@@ -1,7 +1,7 @@
 import { renderToString } from 'react-dom/server';
 
-import Index from './index.tsx';
-import App from './App.tsx';
+import Index from './server/index.tsx';
+import App from './server/App.tsx';
 
 Bun.serve({
   async fetch(req) {
@@ -16,6 +16,16 @@ Bun.serve({
       return new Response(htmlFromReact, {
         headers: {
           'Content-Type': 'text/html; charset=utf-8',
+        },
+      });
+    } else if (pathname === '/index.js') {
+      const bundle = await Bun.build({
+        entrypoints: ['./client/index.tsx'],
+      });
+
+      return new Response(await bundle.outputs[0]?.text(), {
+        headers: {
+          'Content-Type': 'text/javascript; charset=utf-8',
         },
       });
     } else {
