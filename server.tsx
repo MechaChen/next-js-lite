@@ -6,7 +6,8 @@ Bun.serve({
   async fetch(req) {
     const { pathname } = new URL(req.url);
     if (pathname.startsWith('/client-')) {
-      // 提供打包後的客戶端腳本
+      // return pre-generated bundled client scripts, which includes compiled page component code as well.
+      // and the client script will start hydrating the Page component with bundled Page code
       const fileName = pathname.replace('/client-', 'client-');
       const filePath = `./dist/${fileName}`;
 
@@ -30,7 +31,7 @@ Bun.serve({
         const Component = App.default;
         const ComponentProps = await App.getServerSideProps();
 
-        // 生成客戶端腳本檔案
+        // prepare the client script for hydration, including the path of page component to be loaded
         const clientScriptContent = `
           import { hydrateRoot } from 'react-dom/client';
           import React from 'react';
@@ -42,11 +43,13 @@ Bun.serve({
           }
         `;
 
-        // 將客戶端腳本寫入臨時檔案
+        // generate the hydration script file
         const tempClientFile = `./temp-client-${moduleName}.tsx`;
         await Bun.write(tempClientFile, clientScriptContent);
 
-        // 打包客戶端腳本
+        // bundle the script file, which will include 2 parts:
+          // the hydration script
+          // the Page component, which will be resolved from the `import` by the bundler and bundled together into the final file
         await Bun.build({
           entrypoints: [tempClientFile],
           target: 'browser',
@@ -56,11 +59,10 @@ Bun.serve({
           },
         });
 
-        // 刪除臨時檔案
+        // remove the temp uncompiled hydration script at the build time
         try {
           await Bun.file(tempClientFile).unlink();
         } catch (error) {
-          // 忽略刪除錯誤
         }
 
         const clientScriptUrl = `/client-${moduleName}.js`;
